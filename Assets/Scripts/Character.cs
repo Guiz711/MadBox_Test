@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
 {
 	public float		Speed;
 
-	private PathCreator	mTrack;
+	private Track		mTrack;
 	private bool		mIsMoving;
 	private float		mDistanceTravelled;
 
@@ -15,17 +15,20 @@ public class Character : MonoBehaviour
 	{
 		if (mIsMoving && mTrack != null)
 		{
-			mDistanceTravelled += Speed * Time.deltaTime;
-			transform.position = mTrack.path.GetPointAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
-			transform.rotation = mTrack.path.GetRotationAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
+			// mDistanceTravelled += Speed * Time.deltaTime;
+			// transform.position = mTrack.path.GetPointAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
+			// transform.rotation = mTrack.path.GetRotationAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
+
+			transform.position = mTrack.GetNextPosition(transform.position, Speed);
 		}
 	}
 
-	public void Init(PathCreator track)
+	public void Init(Track track)
 	{
 		mTrack = track;
-		transform.position = mTrack.path.GetPoint(0);
-		transform.rotation = mTrack.path.GetRotation(0f);
+		// transform.position = mTrack.path.GetPoint(0);
+		// transform.rotation = mTrack.path.GetRotation(0f);
+		transform.position = mTrack.GetStartPosition();
 	}
 
 	public void SetMove(bool move)

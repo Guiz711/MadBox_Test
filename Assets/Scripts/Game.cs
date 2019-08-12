@@ -7,7 +7,7 @@ public class Game : MonoBehaviour
 {
 	public GameObject	CharacterPrefab;
 	public FollowPlayer	MainCamera;
-	public PathCreator	Track;
+	public Track		Track;
 
 	private void Start()
 	{
