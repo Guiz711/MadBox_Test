@@ -5,26 +5,27 @@ using PathCreation;
 
 public class Character : MonoBehaviour
 {
-	public PathCreator	Track;
 	public float		Speed;
 
+	private PathCreator	mTrack;
 	private bool		mIsMoving;
 	private float		mDistanceTravelled;
 
-	private void Awake()
+	private void FixedUpdate()
 	{
-		transform.position = Track.path.GetPoint(0);
-		transform.rotation = Track.path.GetRotation(0f);
-	}
-
-	private void Update()
-	{
-		if (mIsMoving)
+		if (mIsMoving && mTrack != null)
 		{
 			mDistanceTravelled += Speed * Time.deltaTime;
-			transform.position = Track.path.GetPointAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
-			transform.rotation = Track.path.GetRotationAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
+			transform.position = mTrack.path.GetPointAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
+			transform.rotation = mTrack.path.GetRotationAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
 		}
+	}
+
+	public void Init(PathCreator track)
+	{
+		mTrack = track;
+		transform.position = mTrack.path.GetPoint(0);
+		transform.rotation = mTrack.path.GetRotation(0f);
 	}
 
 	public void SetMove(bool move)
