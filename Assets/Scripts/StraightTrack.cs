@@ -11,6 +11,7 @@ public class StraightTrack : Track
 	private float		mSqrDistance;
 	private Vector3		mDir;
 	private Quaternion	mRotation;
+	private int			mCurrentCheckpointIndex;
 
 	private void Awake()
 	{
@@ -18,6 +19,12 @@ public class StraightTrack : Track
 		mSqrDistance = segment.sqrMagnitude;
 		mDir = segment.normalized;
 		mRotation = Quaternion.LookRotation(mDir, AttachedMeshFilter.mesh.normals[0]);
+
+		CheckpointsSqrDist = new float[Checkpoints.Length];
+		for (int i = 0; i < CheckpointsSqrDist.Length; ++i)
+		{
+			CheckpointsSqrDist[i] = (Checkpoints[i].position - Start.position).sqrMagnitude;
+		}
 	}
 
 	public override Vector3	GetStartPosition()
@@ -31,13 +38,22 @@ public class StraightTrack : Track
 
 		if (currentSqrDistance >= mSqrDistance)
 		{
+			mCurrentCheckpointIndex = 0;
 			if (OnTrackFinished != null)
-			{
 				OnTrackFinished();
-			}
 			return End.position;
 		}
+		else if (mCurrentCheckpointIndex + 1 < Checkpoints.Length &&
+			currentSqrDistance >= CheckpointsSqrDist[mCurrentCheckpointIndex + 1])
+		{
+			++mCurrentCheckpointIndex;
+		}
 		return currentPosition + mDir * speed * Time.deltaTime;
+	}
+
+	public override Vector3 GetCheckpointPosition()
+	{
+		return Checkpoints[mCurrentCheckpointIndex].position;
 	}
 
 	public override Quaternion GetRotation(Vector3 position)

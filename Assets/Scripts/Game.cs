@@ -32,6 +32,7 @@ public class Game : MonoBehaviour
 
 	public void InitRace()
 	{
+		mPlayer.BlockInput = false;
 		EndLevelPanel.SetActive(false);
 		mCurrentTrackIndex = 0;
 		InitTrack();
@@ -57,6 +58,8 @@ public class Game : MonoBehaviour
 
 	private void RaceFinished()
 	{
+		mPlayer.SetMove(false);
+		mPlayer.BlockInput = true;
 		EndLevelPanel.SetActive(true);
 	}
 }

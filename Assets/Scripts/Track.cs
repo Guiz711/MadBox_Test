@@ -5,6 +5,9 @@ using UnityEngine;
 public abstract class Track : MonoBehaviour
 {
 	public Vector3			CameraOffset;
+	public Transform[]		Checkpoints;
+
+	public float[]			CheckpointsSqrDist;
 
 	public delegate void	TrackEvent();
 	public TrackEvent		OnTrackFinished;
@@ -12,4 +15,5 @@ public abstract class Track : MonoBehaviour
 	public abstract Vector3 GetStartPosition();
 	public abstract Vector3 GetNextPosition(Vector3 currentPosition, float speed);
 	public abstract Quaternion GetRotation(Vector3 position);
+	public abstract Vector3 GetCheckpointPosition();
 }

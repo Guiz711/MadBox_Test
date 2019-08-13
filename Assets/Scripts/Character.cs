@@ -5,22 +5,30 @@ using PathCreation;
 
 public class Character : MonoBehaviour
 {
-	public float		Speed;
-	public float		OffsetY;
+	private static float sCollisionCooldown = 1f;
 
-	private Track		mTrack;
-	private bool		mIsMoving;
-	private float		mDistanceTravelled;
-	private Vector3		mOffset;
+	public float			Speed;
+	public float			OffsetY;
+
+	public bool				BlockInput { get; set; }
+
+	private Track			mTrack;
+	private bool			mIsMoving;
+	private float			mDistanceTravelled;
+	private Vector3			mOffset;
+	private Rigidbody		mRigidBody;
+	private float			mLastCollisionTime;
+	private FollowPlayer	mCamera;
+
+	private void Awake()
+	{
+		mRigidBody = GetComponent<Rigidbody>();
+	}
 
 	private void Update()
 	{
 		if (mIsMoving && mTrack != null)
 		{
-			// mDistanceTravelled += Speed * Time.deltaTime;
-			// transform.position = mTrack.path.GetPointAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
-			// transform.rotation = mTrack.path.GetRotationAtDistance(mDistanceTravelled, EndOfPathInstruction.Stop);
-
 			transform.position = mTrack.GetNextPosition(transform.position, Speed);
 			transform.rotation = mTrack.GetRotation(transform.position);
 		}
@@ -30,22 +38,35 @@ public class Character : MonoBehaviour
 	{
 		mTrack = track;
 		mOffset = new Vector3(0, OffsetY, 0);
-		// transform.position = mTrack.path.GetPoint(0);
-		// transform.rotation = mTrack.path.GetRotation(0f);
 		transform.position = mTrack.GetStartPosition() + mOffset;
 		transform.rotation = mTrack.GetRotation(transform.position);
 	}
 
-	public void OnCollisionEnter(Collision col)
+	private void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.layer == LayerMask.NameToLayer("Traps"))
+		if (col.gameObject.layer == LayerMask.NameToLayer("Traps")
+			&& Time.realtimeSinceStartup - mLastCollisionTime >= sCollisionCooldown)
 		{
-			Debug.LogWarning("YOU LOOSE !");
+			mLastCollisionTime = Time.realtimeSinceStartup;
+			mIsMoving = false;
+			BlockInput = true;
+			Invoke("Respawn", sCollisionCooldown);
 		}
 	}
 
 	public void SetMove(bool move)
 	{
-		mIsMoving = move;
+		if (!BlockInput)
+			mIsMoving = move;
 	}
+
+	private void Respawn()
+	{
+			BlockInput = false;
+			mRigidBody.velocity = Vector3.zero;
+			mRigidBody.angularVelocity = Vector3.zero;
+			transform.position = mTrack.GetCheckpointPosition() + mOffset;
+			transform.rotation = mTrack.GetRotation(transform.position);
+	}
+
 }
