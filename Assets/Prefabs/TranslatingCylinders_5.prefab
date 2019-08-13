@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 399240648181827434}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.46, y: 1.5, z: -23.1}
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_Children:
@@ -49,14 +49,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovingParts:
-  - {fileID: 399240649666487692}
-  - {fileID: 7756233484828377048}
   - {fileID: 7756233486027291709}
+  - {fileID: 7756233484828377048}
+  - {fileID: 399240649666487692}
   - {fileID: 7756233486391967148}
   - {fileID: 7756233485524522254}
   Speed: 10
   TranslationDirection: {x: 1, y: 0, z: 0}
   TranslationMagnitude: 18
+  Delay: 3
 --- !u!1 &399240649666487688
 GameObject:
   m_ObjectHideFlags: 0

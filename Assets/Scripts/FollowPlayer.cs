@@ -4,6 +4,7 @@ using System.Collections;
 public class FollowPlayer : MonoBehaviour
 {
 	public float		FollowSpeed;
+	public float		RotationSpeed;
 	public Vector3		Offset;
 	public bool			UseDebugDist;
 	public Vector3		DebugDistFromTarget;

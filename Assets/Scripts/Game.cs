@@ -32,6 +32,7 @@ public class Game : MonoBehaviour
 
 	public void InitRace()
 	{
+		Races[mCurrentRaceIndex].RootObject.SetActive(true);
 		mPlayer.BlockInput = false;
 		EndLevelPanel.SetActive(false);
 		mCurrentTrackIndex = 0;
@@ -61,5 +62,7 @@ public class Game : MonoBehaviour
 		mPlayer.SetMove(false);
 		mPlayer.BlockInput = true;
 		EndLevelPanel.SetActive(true);
+		Races[mCurrentRaceIndex].RootObject.SetActive(false);
+		mCurrentRaceIndex = mCurrentRaceIndex < Races.Length - 1 ? mCurrentRaceIndex + 1 : 0;
 	}
 }

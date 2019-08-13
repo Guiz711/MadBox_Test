@@ -36,6 +36,8 @@ public class Character : MonoBehaviour
 
 	public void Init(Track track)
 	{
+		mRigidBody.velocity = Vector3.zero;
+		mRigidBody.angularVelocity = Vector3.zero;
 		mTrack = track;
 		mOffset = new Vector3(0, OffsetY, 0);
 		transform.position = mTrack.GetStartPosition() + mOffset;

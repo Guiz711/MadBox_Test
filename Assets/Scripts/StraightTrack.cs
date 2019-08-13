@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StraightTrack : Track
 {
-	public MeshFilter	AttachedMeshFilter;
 	public Transform	Start;
 	public Transform	End;
 
@@ -18,7 +17,7 @@ public class StraightTrack : Track
 		var segment = End.position - Start.position;
 		mSqrDistance = segment.sqrMagnitude;
 		mDir = segment.normalized;
-		mRotation = Quaternion.LookRotation(mDir, AttachedMeshFilter.mesh.normals[0]);
+		mRotation = Quaternion.LookRotation(mDir);
 
 		CheckpointsSqrDist = new float[Checkpoints.Length];
 		for (int i = 0; i < CheckpointsSqrDist.Length; ++i)
