@@ -1,26 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class FollowPlayer : MonoBehaviour
 {
-	public float			FollowSpeed;
-	public float			OffsetY;
+	public float		FollowSpeed;
+	public Vector3		Offset;
+	public bool			UseDebugDist;
+	public Vector3		DebugDistFromTarget;
 
-	private Transform		mTarget;
-	private Vector3			mOffset;
+	public Transform	Target { get; set; }
+	public Vector3		DistFromTarget { get; set; }
 
-    private void FixedUpdate()
-    {
-		if (mTarget != null)
-		{
-			transform.position = Vector3.Lerp(transform.position, mTarget.position + OffsetY * Vector3.up, FollowSpeed * Time.deltaTime);
-		}
-    }
-
-	public void SetTarget(Transform target)
+	void LateUpdate()
 	{
-		mTarget = target;
-		transform.position = target.position + OffsetY * Vector3.up;
+		if(Target == null)
+			return;
+
+		var newPos = Target.position + DistFromTarget;
+		if (UseDebugDist)
+			newPos = Target.position + DebugDistFromTarget;
+
+		var dirToTarget = (Target.position - newPos).normalized;
+
+		transform.rotation = Quaternion.LookRotation(dirToTarget);
+		transform.position = Vector3.Lerp(transform.position, newPos + Offset, FollowSpeed * Time.deltaTime);
 	}
 }
